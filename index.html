@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unmapped – Kontinente & Regionen v118</title><style>body{background:#10212b;color:#e6f0f1;font:15px system-ui;margin:25px}main{max-width:1150px;margin:auto}button,input{font:inherit;padding:7px;background:#24424b;color:white;border:1px solid #65838a;border-radius:5px}svg{width:100%;background:#183943;border:1px solid #65838a} .mapwrap{position:relative;width:100%;} .mapwrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;} .mapwrap svg{position:relative;z-index:1;display:block;box-sizing:border-box;background:transparent;touch-action:manipulation;} .controlgroup{border:1px solid #65838a;border-radius:8px;padding:10px 12px;margin:10px 0;min-width:0}.controlgroup legend{color:#b7d3d6;font-weight:650;padding:0 7px}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center} input[type=range]{width:145px;vertical-align:middle} input[type=number]{box-sizing:border-box} .primary-action{display:block;width:100%;max-width:600px;margin:18px auto 20px;padding:17px 22px;font-size:21px;font-weight:750;background:#247b63;border:2px solid #91e3bc;border-radius:12px;box-shadow:0 5px 18px #0005;cursor:pointer} .primary-action:active{transform:translateY(1px)} .secondary-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center} .note{font-size:13px;color:#b7d3d6}#stats{margin:15px 0;white-space:pre-wrap}#detail{padding:12px;background:#25404a}@media(max-width:650px){body{margin:10px;font-size:14px}main{width:100%}label{display:inline-block;margin:5px 2px}input{max-width:100px}button{margin:4px 2px;min-height:44px}svg{max-height:65vh}#stats{font-size:12px;overflow-wrap:anywhere}} </style><main><h2>Unmapped · Kontinente & Ozeane · v118</h2><p>Erster Geländeversuch: Kontinente verlaufen unabhängig von Regionsgrenzen. Die Welt schließt links/rechts und oben/unten nahtlos an. Vollständige Weltübersicht mit Nord-/Süd-Eisgebieten. Die Polargebiete sind wegen der vertikalen Weltumrundung am oberen und unteren Kartenrand identisch verbunden. Eisflächen sind unterbrochen und maximal etwa 70 % breit. Gleicher Seed + gleiche Kontinentvariante + gleicher Meeranteil = gleiche Küsten.</p><label>Seed <input type="number" id="seed" value="230911"></label> <label>Regionen <input type="number" id="regionCount" value="300" min="1" max="3000" step="1" title="Weltfläche passt sich automatisch an"></label> <label>Pflichtregionen (10 %) <input type="number" id="mandatoryCount" value="30" min="0" max="3000" readonly title="Automatisch 10 % der Regionsanzahl"></label><div class="controls"><label>Meeranteil <input type="range" id="sea" min="0" max="100" value="60" step="1"><input type="number" id="seaExact" min="0" max="100" value="60" step="1" inputmode="numeric" aria-label="Meeranteil in Prozent" style="width:65px"> % <span class="note">(empfohlen: 30–85 %)</span> <output id="seaVal" hidden>60 %</output></label></div><fieldset class="controlgroup"><legend>Anzeigeoptionen</legend><div class="controls"><label><input type="checkbox" id="borders"> Regionsgrenzen</label><label><input type="checkbox" id="poiView"> Pflicht-POIs</label><label><input type="checkbox" id="polarIce"> Polare Eisgebiete</label><label><input type="checkbox" id="plateView"> Tektonische Platten anzeigen</label><label><input type="checkbox" id="erosionView"> Flusserosion / Täler anzeigen</label><label><input type="checkbox" id="riverView" checked> Flüsse im Gelände anzeigen</label><label><input type="checkbox" id="waterfallView" checked> Wasserfälle anzeigen</label></div></fieldset><div class="controls"><label>Kartenansicht <select id="mapMode" style="background:#24424b;color:white;padding:8px;border-radius:6px"><option value="terrain">Gelände</option><option value="temperature">Temperatur (Jahresmittel)</option><option value="wind">Globale Winde</option><option value="rain">Niederschlag (Jahresmittel)</option><option value="biome">Biome</option><option value="height">Höhenkarte über Gelände</option><option value="tectonics">Tektonische Aktivität</option><option value="volcanism">Vulkanismus & Atolle</option><option value="geology">Geologische Kontrolle</option><option value="heightSource">Höhenursachen (Diagnose)</option><option value="drainage">Wasserabfluss (Hauptläufe)</option><option value="drainageRaw">Wasserabfluss (alle Zuflüsse)</option><option value="drainageSinks">Abflussziele & Senken</option></select></label><label id="heightOpacityLabel">Höhen-Deckkraft <input type="range" id="heightOpacity" min="0" max="80" value="30" step="5"><output id="heightOpacityValue">30 %</output></label><label>Platten <input type="range" id="plateCount" min="4" max="24" value="12" step="1"><input type="number" id="plateCountExact" min="4" max="24" value="12" step="1" inputmode="numeric" style="width:65px" aria-label="Anzahl tektonischer Platten"></label><label>Kontinentvariante <input type="number" id="continentVariant" value="0" min="0" max="2147483647" step="1" inputmode="numeric" style="width:100px" aria-label="Kontinentvariante"></label><button id="reroll">Kontinente neu mischen</button></div><fieldset class="controlgroup"><legend>Je 100 Regionen</legend><div class="controls"><label>Hauptflüsse <input id="riverRate" type="number" min="0" max="10" value="1" style="width:65px"></label><label>Hohe Bergmassive <input id="mountainRate" type="number" min="0" max="10" step="0.1" value="0.7" style="width:65px"></label><label>Seen (max.) <input id="lakeRate" type="number" min="0" max="10" value="5" style="width:65px"></label></div></fieldset><fieldset class="controlgroup"><legend>Landschaftsübersicht</legend><div id="landscapeCounts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px"></div></fieldset><button id="run" class="primary-action">🌍 Welt generieren</button><div class="secondary-actions"><button id="next">Nächster Seed</button><button id="export">Regions-SVG</button></div><div id="stats"></div><div class="mapwrap"><svg id="map" viewBox="0 0 1000 800"></svg><canvas id="terrain" width="480" height="384"></canvas><canvas id="heightOverlay" width="480" height="384" style="z-index:0;display:none"></canvas><canvas id="plates" width="480" height="384" style="z-index:0;display:none"></canvas></div><p class="note" id="volcanismLegend" style="display:none">Vulkanismus: <span style="color:#f7ad37">● Hotspot-Vulkane</span> · <span style="color:#fa657a">● Vulkanische Inselbögen</span> · <span style="color:#73dfc9">● Atollriffe</span>. In „Geologische Kontrolle“ zusätzlich: helle Plattengrenzen und Pfeile für Plattenbewegung. Dunkle Flächen zeigen den übrigen Meeresboden und das Land.</p><p class="note" id="landstats"></p><div id="detail">Tippe auf eine Region, um ihre Maße und POIs zu sehen. Die Karte selbst bleibt unbeschriftet.</div><p>Weltfläche skaliert proportional zur Regionsanzahl: 100 Regionen entsprechen etwa 3,16 × 2,53 km (8 km²). Maximal 500 × 500 m, mindestens 75 × 100 oder 100 × 75 m. Teststandard 300 Regionen und 30 Pflicht-POIs (10 %). Pflichtregionen werden vor der finalen Verfeinerung fixiert. Optional-POIs folgen nach der Regionsbildung.</p></main><script>
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unmapped – Kontinente & Regionen v122</title><style>body{background:#10212b;color:#e6f0f1;font:15px system-ui;margin:25px}main{max-width:1150px;margin:auto}button,input{font:inherit;padding:7px;background:#24424b;color:white;border:1px solid #65838a;border-radius:5px}svg{width:100%;background:#183943;border:1px solid #65838a} .mapwrap{position:relative;width:100%;} .mapwrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;} .mapwrap svg{position:relative;z-index:1;display:block;box-sizing:border-box;background:transparent;touch-action:manipulation;} .controlgroup{border:1px solid #65838a;border-radius:8px;padding:10px 12px;margin:10px 0;min-width:0}.controlgroup legend{color:#b7d3d6;font-weight:650;padding:0 7px}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center} input[type=range]{width:145px;vertical-align:middle} input[type=number]{box-sizing:border-box} .primary-action{display:block;width:100%;max-width:600px;margin:18px auto 20px;padding:17px 22px;font-size:21px;font-weight:750;background:#247b63;border:2px solid #91e3bc;border-radius:12px;box-shadow:0 5px 18px #0005;cursor:pointer} .primary-action:active{transform:translateY(1px)} .secondary-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center} .note{font-size:13px;color:#b7d3d6}#stats{margin:15px 0;white-space:pre-wrap}#detail{padding:12px;background:#25404a}@media(max-width:650px){body{margin:10px;font-size:14px}main{width:100%}label{display:inline-block;margin:5px 2px}input{max-width:100px}button{margin:4px 2px;min-height:44px}svg{max-height:65vh}#stats{font-size:12px;overflow-wrap:anywhere}} </style><main><h2>Unmapped · Kontinente & Ozeane · v122</h2><p>Erster Geländeversuch: Kontinente verlaufen unabhängig von Regionsgrenzen. Die Welt schließt links/rechts und oben/unten nahtlos an. Vollständige Weltübersicht mit Nord-/Süd-Eisgebieten. Die Polargebiete sind wegen der vertikalen Weltumrundung am oberen und unteren Kartenrand identisch verbunden. Eisflächen sind unterbrochen und maximal etwa 70 % breit. Gleicher Seed + gleiche Kontinentvariante + gleicher Meeranteil = gleiche Küsten.</p><label>Seed <input type="number" id="seed" value="230911"></label> <label>Regionen <input type="number" id="regionCount" value="300" min="1" max="3000" step="1" title="Weltfläche passt sich automatisch an"></label> <label>Pflichtregionen (10 %) <input type="number" id="mandatoryCount" value="30" min="0" max="3000" readonly title="Automatisch 10 % der Regionsanzahl"></label><div class="controls"><label>Meeranteil <input type="range" id="sea" min="0" max="100" value="60" step="1"><input type="number" id="seaExact" min="0" max="100" value="60" step="1" inputmode="numeric" aria-label="Meeranteil in Prozent" style="width:65px"> % <span class="note">(empfohlen: 30–85 %)</span> <output id="seaVal" hidden>60 %</output></label></div><fieldset class="controlgroup"><legend>Anzeigeoptionen</legend><div class="controls"><label><input type="checkbox" id="borders"> Regionsgrenzen</label><label><input type="checkbox" id="poiView"> Pflicht-POIs</label><label><input type="checkbox" id="polarIce"> Polare Eisgebiete</label><label><input type="checkbox" id="plateView"> Tektonische Platten anzeigen</label><label><input type="checkbox" id="erosionView"> Flusserosion / Täler anzeigen</label><label><input type="checkbox" id="riverView" checked> Flüsse im Gelände anzeigen</label><label><input type="checkbox" id="waterfallView" checked> Wasserfälle anzeigen</label></div></fieldset><div class="controls"><label>Kartenansicht <select id="mapMode" style="background:#24424b;color:white;padding:8px;border-radius:6px"><option value="terrain">Gelände</option><option value="temperature">Temperatur (Jahresmittel)</option><option value="wind">Globale Winde</option><option value="rain">Niederschlag (Jahresmittel)</option><option value="biome">Biome</option><option value="height">Höhenkarte über Gelände</option><option value="tectonics">Tektonische Aktivität</option><option value="volcanism">Vulkanismus & Atolle</option><option value="geology">Geologische Kontrolle</option><option value="heightSource">Höhenursachen (Diagnose)</option><option value="drainage">Wasserabfluss (Hauptläufe)</option><option value="drainageRaw">Wasserabfluss (alle Zuflüsse)</option><option value="drainageSinks">Abflussziele & Senken</option></select></label><label id="heightOpacityLabel">Höhen-Deckkraft <input type="range" id="heightOpacity" min="0" max="80" value="30" step="5"><output id="heightOpacityValue">30 %</output></label><label>Platten <input type="range" id="plateCount" min="4" max="24" value="12" step="1"><input type="number" id="plateCountExact" min="4" max="24" value="12" step="1" inputmode="numeric" style="width:65px" aria-label="Anzahl tektonischer Platten"></label><label>Kontinentvariante <input type="number" id="continentVariant" value="0" min="0" max="2147483647" step="1" inputmode="numeric" style="width:100px" aria-label="Kontinentvariante"></label><button id="reroll">Kontinente neu mischen</button></div><fieldset class="controlgroup"><legend>Je 100 Regionen</legend><div class="controls"><label>Hauptflüsse <input id="riverRate" type="number" min="0" max="10" value="1" style="width:65px"></label><label>Hohe Bergmassive <input id="mountainRate" type="number" min="0" max="10" step="0.1" value="0.7" style="width:65px"></label><label>Seen (max.) <input id="lakeRate" type="number" min="0" max="10" value="5" style="width:65px"></label></div></fieldset><fieldset class="controlgroup"><legend>Landschaftsübersicht</legend><div id="landscapeCounts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px"></div></fieldset><button id="run" class="primary-action">🌍 Welt generieren</button><div class="secondary-actions"><button id="next">Nächster Seed</button><button id="export">Regions-SVG</button></div><div id="stats"></div><div class="mapwrap"><svg id="map" viewBox="0 0 1000 800"></svg><canvas id="terrain" width="480" height="384"></canvas><canvas id="heightOverlay" width="480" height="384" style="z-index:0;display:none"></canvas><canvas id="plates" width="480" height="384" style="z-index:0;display:none"></canvas></div><p class="note" id="volcanismLegend" style="display:none">Vulkanismus: <span style="color:#f7ad37">● Hotspot-Vulkane</span> · <span style="color:#fa657a">● Vulkanische Inselbögen</span> · <span style="color:#73dfc9">● Atollriffe</span>. In „Geologische Kontrolle“ zusätzlich: helle Plattengrenzen und Pfeile für Plattenbewegung. Dunkle Flächen zeigen den übrigen Meeresboden und das Land.</p><p class="note" id="landstats"></p><div id="detail">Tippe auf eine Region, um ihre Maße und POIs zu sehen. Die Karte selbst bleibt unbeschriftet.</div><p>Weltfläche skaliert proportional zur Regionsanzahl: 100 Regionen entsprechen etwa 3,16 × 2,53 km (8 km²). Maximal 500 × 500 m, mindestens 75 × 100 oder 100 × 75 m. Teststandard 300 Regionen und 30 Pflicht-POIs (10 %). Pflichtregionen werden vor der finalen Verfeinerung fixiert. Optional-POIs folgen nach der Regionsbildung.</p></main><script>
 let W=4472,H=3578;let continentVariant=0;const svg=document.getElementById('map');let regions=[],pois=[];
 function featureCount(id){return Math.floor(Math.max(0,Math.min(10,Number(document.getElementById(id).value)||0))*Math.max(0,Number(document.getElementById('regionCount').value))/100)}
 function rng(seed){let s=(seed>>>0)||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)/4294967296}}
@@ -91,8 +91,19 @@ const terrain=document.getElementById('terrain');
 // Eis nur in begrenzten, toroidal verbundenen Nord-/Süd-Sektoren (max. ~65% der Breite).
 function polarMask(u,v,seed){const r=rng((seed^0x0f13a92b)>>>0);const center=r(),width=.47+r()*.17;let dx=Math.abs(u-center);dx=Math.min(dx,1-dx);const edge=Math.max(0,1-dx/(width*.5));if(edge<=0)return 0;const latitude=Math.min(v,1-v);const wobble=.012*Math.sin(u*2*Math.PI*7+r()*0)+.008*Math.cos(u*2*Math.PI*11);const cap=.075+.095*Math.pow(edge,.65)+wobble;return latitude<cap?Math.min(1,(cap-latitude)/.018):0}
 
-function field(u,v,seed){const rand=rng((seed ^ 0x7f4a7c15)>>>0);let z=0,weight=0;const layers=[[1,1,1.0],[2,1,.62],[1,2,.52],[2,2,.36],[3,2,.28],[4,3,.16],[6,5,.08]];
- for(const [fx,fy,amp] of layers){const a=rand()*Math.PI*2,b=rand()*Math.PI*2,c=rand()*Math.PI*2;z+=amp*(.58*Math.cos(2*Math.PI*(fx*u+fy*v)+a)+.42*Math.sin(2*Math.PI*(fx*u-fy*v)+b)+.3*Math.cos(2*Math.PI*fx*u+c));weight+=amp*1.3}return z/weight}
+const fieldCache=new Map();
+function field(u,v,seed){
+ let layers=fieldCache.get(seed);
+ if(!layers){
+  if(fieldCache.size>=256)fieldCache.clear();
+  const rand=rng((seed ^ 0x7f4a7c15)>>>0);
+  layers=[[1,1,1.0],[2,1,.62],[1,2,.52],[2,2,.36],[3,2,.28],[4,3,.16],[6,5,.08]].map(([fx,fy,amp])=>[fx,fy,amp,rand()*Math.PI*2,rand()*Math.PI*2,rand()*Math.PI*2]);
+  fieldCache.set(seed,layers);
+ }
+ let z=0,weight=0;
+ for(const [fx,fy,amp,a,b,c] of layers){z+=amp*(.58*Math.cos(2*Math.PI*(fx*u+fy*v)+a)+.42*Math.sin(2*Math.PI*(fx*u-fy*v)+b)+.3*Math.cos(2*Math.PI*fx*u+c));weight+=amp*1.3}
+ return z/weight;
+}
 // Periodische, seedbasierte Kontinentverteilung mit optionalen lokalen Inselgruppen.
 // Der Weltgrundtyp bleibt immer mehrere Kontinente statt Superkontinent/Inselwelt.
 // Kontinentzentren, Form und Inselgruppen werden pro Seed einmal vorbereitet.
@@ -673,6 +684,28 @@ function drawTerrain(){if(!regions.length)return;
   }
   inlandBasins.push({cells,level,volume,inland:true});
  }
+ const iceMassif=new Float32Array(w*h);
+ let iceCenter=-1,iceScore=-Infinity;
+ for(let i=0;i<w*h;i++){
+  const y=Math.floor(i/w),lat=Math.abs(2*y/h-1);
+  if(mask[i]<coast||lat<.96)continue;
+  const score=values[i]+(lat-.96)*2;
+  if(score>iceScore){iceScore=score;iceCenter=i;}
+ }
+ if(iceCenter>=0){
+  const cx=iceCenter%w,cy=Math.floor(iceCenter/w);
+  for(let i=0;i<w*h;i++){
+   if(mask[i]<coast)continue;
+   const x=i%w,y=Math.floor(i/w),dx=x-cx,dy=y-cy;
+   const wx=dx-Math.round(dx/w)*w,wy=dy-Math.round(dy/h)*h;
+   if(Math.abs(wx)>25||Math.abs(wy)>12)continue;
+   const n=field((x/w*19)%1,(y/h*19)%1,seed^0x681a2b39);
+   const envelope=Math.max(0,1-Math.hypot(wx/19,wy/9)/(1+.25*n));
+   if(envelope<=0)continue;
+   const lift=envelope*(.48+.13*Math.cos(wx*.7+wy*.4+n*3));
+   iceMassif[i]=lift;values[i]+=lift;
+  }
+ }
  const drainage=new Float32Array(w*h),downstream=new Int32Array(w*h);
  const basinEnd=new Int32Array(w*h),spillDepth=new Float32Array(w*h);
  const filled=new Float32Array(w*h),visited=new Uint8Array(w*h);
@@ -698,7 +731,12 @@ function drawTerrain(){if(!regions.length)return;
   }heap[p]=last}
   return first;
  }
- const landCells=[];
+ const landCells=[],neighbors=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]];
+ const floodRank=new Int32Array(w*h),routingHeight=new Float32Array(w*h);
+ function rebuildDrainage(){
+ landCells.length=0;heap.length=0;floodOrder.length=0;
+ drainage.fill(0);visited.fill(0);filled.fill(0);spillDepth.fill(0);flatDistance.fill(0);downstream.fill(-1);basinEnd.fill(-1);
+
  for(let i=0;i<w*h;i++){
   if(mask[i]>=coast){landCells.push(i);drainage[i]=1}
   else{visited[i]=1;filled[i]=values[i];heapPush(i,values[i])}
@@ -708,7 +746,7 @@ function drawTerrain(){if(!regions.length)return;
   let lowest=landCells[0];for(const i of landCells)if(values[i]<values[lowest])lowest=i;
   visited[lowest]=1;filled[lowest]=values[lowest];heapPush(lowest,values[lowest]);
  }
- const neighbors=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]];
+
  while(heap.length){
   const node=heapPop(),i=node.i,x=i%w,y=Math.floor(i/w);
   floodOrder.push(i);
@@ -733,7 +771,7 @@ function drawTerrain(){if(!regions.length)return;
  // Fließrichtungswahl. Die sichtbare Topografie bleibt unverändert.
  // Dadurch werden isolierte Rasterzacken nicht zu künstlichen
  // Zickzack-Flüssen. Priority-Flood liefert weiterhin die Überläufe.
- const floodRank=new Int32Array(w*h),routingHeight=new Float32Array(w*h);
+
  for(let k=0;k<floodOrder.length;k++)floodRank[floodOrder[k]]=k;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
   const i=y*w+x;
@@ -749,7 +787,7 @@ function drawTerrain(){if(!regions.length)return;
   }
   routingHeight[i]=sum/weight;
  }
- // v118: kontinuierlicher Hanggradient bestimmt die bevorzugte
+ // v122: kontinuierlicher Hanggradient bestimmt die bevorzugte
  // Fließrichtung. D8 dient nur noch als diskrete Speicherung der
  // hydrologischen Verbindung, nicht als Richtungsgeber.
  const sampleRoute=(x,y)=>routingHeight[((y%h+h)%h)*w+((x%w+w)%w)];
@@ -792,11 +830,17 @@ function drawTerrain(){if(!regions.length)return;
  for(const i of landCells){
   basinEnd[i]=spillDepth[i]>.035?i:-1;
  }
+
+ }
+ rebuildDrainage();
  const riverThreshold=48;
  // Sichtbare Flüsse: stärkste unabhängige Mündungen zuerst,
  // anschließend seedabhängig ausgewählte echte Nebenäste.
  const blocks=Math.max(0,Math.floor(Number(document.getElementById('regionCount').value)/100));
- const visibleRiver=new Uint8Array(w*h),strongestUp=new Int32Array(w*h);strongestUp.fill(-1);
+ const visibleRiver=new Uint8Array(w*h),strongestUp=new Int32Array(w*h),riverId=new Int32Array(w*h);let riverCount=0;
+ function rebuildRivers(){
+ visibleRiver.fill(0);strongestUp.fill(-1);riverId.fill(-1);riverCount=0;
+
  const outlets=[];
  for(const i of landCells){
   const d=downstream[i];
@@ -804,7 +848,7 @@ function drawTerrain(){if(!regions.length)return;
   if(strongestUp[d]<0||drainage[i]>drainage[strongestUp[d]])strongestUp[d]=i;
  }
  outlets.sort((a,b)=>drainage[b]-drainage[a]||a-b);
- const riverId=new Int32Array(w*h);riverId.fill(-1);let riverCount=0;
+
  function markBranch(start){
   const id=riverCount++;
   let i=start;
@@ -824,6 +868,9 @@ function drawTerrain(){if(!regions.length)return;
   markBranch(candidates[Math.floor(tributaryRng()*candidates.length)]);
  }
 
+
+ }
+ rebuildRivers();
  const lakeMask=new Uint8Array(w*h),lakeSeen=new Uint8Array(w*h),lakeCandidates=[];
  for(const i of landCells){
   if(lakeSeen[i]||spillDepth[i]<.0001)continue;
@@ -879,6 +926,7 @@ function drawTerrain(){if(!regions.length)return;
    }
   }
  }
+ // Temporarily defer second full hydrology pass pending performance verification.
  for(const lake of lakes)for(const i of lake.cells)lakeMask[i]=1;
  const lakeShore=new Uint8Array(w*h);
  for(const lake of lakes)for(const i of lake.cells){
@@ -1205,7 +1253,7 @@ function drawTerrain(){if(!regions.length)return;
  }
  const grassDensity=new Float32Array(w*h),shrubDensity=new Float32Array(w*h);
  const deadTree=new Uint8Array(w*h);
- for(let i=0;i<w*h;i++)if(biome[i]===2&&temperature[i]<-15)biome[i]=14;
+ for(let i=0;i<w*h;i++)if((biome[i]===2&&temperature[i]<-15)||(iceMassif[i]>.035&&!lakeMask[i]))biome[i]=14;
  for(let i=0;i<w*h;i++){
   const type=biome[i];if(type<2||type===14||type===12||lakeMask[i]||coastalMaterial[i]){treeDensity[i]=0;continue;}
   const x=i%w,y=Math.floor(i/w);let slope=0;
@@ -1224,6 +1272,19 @@ function drawTerrain(){if(!regions.length)return;
   shrubDensity[i]=Math.max(0,Math.min(1,shrubBase*ground*(.4+.6*moist)*(1+patch*.5)));
   if(wetlandPool[i])treeDensity[i]=grassDensity[i]=shrubDensity[i]=0;
  }
+ // Annual mean runoff, accumulated along the existing drainage network.
+ const runoff=new Float64Array(w*h),discharge=new Float64Array(w*h);
+ const cellArea=W/w*H/h;
+ for(let i=0;i<w*h;i++){
+  if(mask[i]<coast)continue;
+  const fraction=Math.max(.08,Math.min(.85,.28+rainfall[i]/2400-temperature[i]*.006));
+  runoff[i]=rainfall[i]*fraction;
+  discharge[i]=runoff[i]/1000*cellArea/31557600;
+ }
+ for(let k=floodOrder.length-1;k>=0;k--){
+  const i=floodOrder[k],d=downstream[i];if(d>=0)discharge[d]+=discharge[i];
+ }
+ const flowStrength=i=>discharge[i]/Math.max(1e-12,cellArea*.3/31557600);
  const threshold=0;
  const iceEnabled=document.getElementById('polarIce').checked,mode=document.getElementById('mapMode').value;let ocean=0; // Provisional vertical scale: 1000 metres per normalized height unit.
  for(const f of waterfalls.slice(0,fallCandidates.length?1:0)){
@@ -1279,6 +1340,15 @@ function drawTerrain(){if(!regions.length)return;
    if(type!==2&&type!==12){const green=grassDensity[i]*.12+shrubDensity[i]*.08;c[0]-=green*65;c[1]+=green*32;c[2]-=green*25;}
    const a=type===11?.28:type===2||type===14||type===12?.83:.68;
    r=r*(1-a)+(c[0]+texture)*a;g=g*(1-a)+(c[1]+texture)*a;b=b*(1-a)+(c[2]+texture)*a;
+  }
+  if(shore>=0&&!lakeMask[i]&&hoverHeight[i]>.18){
+   const at=(dx,dy)=>hoverHeight[((y+dy+h)%h)*w+(x+dx+w)%w];
+   const gx=(at(1,0)-at(-1,0))*.5,gy=(at(0,1)-at(0,-1))*.5;
+   const ridge=hoverHeight[i]-(at(1,0)+at(-1,0)+at(0,1)+at(0,-1))*.25;
+   const rough=field((x/w*31)%1,(y/h*31)%1,seed^0x8193a62b);
+   const relief=Math.max(-65,Math.min(65,(-gx-gy)*1700+ridge*900+rough*20))*Math.min(1,(hoverHeight[i]-.18)/.10);
+   r+=relief;g+=relief;b+=relief;
+   if(iceMassif[i]>.035){r=r*.25+(220+relief)*.75;g=g*.25+(237+relief*.8)*.75;b=b*.25+(249+relief*.55)*.75;}
   }
   if(wetlandPool[i]){r=r*.35+55*.65;g=g*.35+109*.65;b=b*.35+120*.65;}
   if(coastalMaterial[i]===1){const a=.78+.18*Math.min(1,-style);r=r*(1-a)+(222+grain*13)*a;g=g*(1-a)+(199+grain*12)*a;b=b*(1-a)+(143+grain*10)*a;}
@@ -1368,7 +1438,7 @@ function drawTerrain(){if(!regions.length)return;
    let dx=q[0]-p[0],dy=q[1]-p[1];
    if(dx>w/2)dx-=w;if(dx<-w/2)dx+=w;
    if(dy>h/2)dy-=h;if(dy<-h/2)dy+=h;
-   ctx.lineWidth=Math.min(1.35,.52+Math.log2(drainage[i]/riverThreshold+1)*.15);
+   ctx.lineWidth=Math.min(1.35,.52+Math.log2(flowStrength(i)/riverThreshold+1)*.15);
    for(const ox of [-w,0,w])for(const oy of [-h,0,h]){
     const px=p[0]+ox,py=p[1]+oy;
     if(px<-4||px>w+4||py<-4||py>h+4)continue;
@@ -1444,7 +1514,7 @@ function drawTerrain(){if(!regions.length)return;
   if(!msg&&(mode==='drainage'||document.getElementById('riverView').checked)){
    let best=null,dist=2.5;
    for(const a of segments){const px=delta(x,a.p[0],w),py=delta(y,a.p[1],h),t=Math.max(0,Math.min(1,(px*a.dx+py*a.dy)/(a.dx*a.dx+a.dy*a.dy||1))),d=Math.hypot(px-t*a.dx,py-t*a.dy);if(d<dist){dist=d;best=a;}}
-   if(best){const i=best.i,width=Math.max(.5,Math.min(80,.8*Math.sqrt(drainage[i]/riverThreshold)));msg='Fluss\nBreite (geschätzt): '+width.toLocaleString('de-AT',{maximumFractionDigits:1})+' m\nLänge des Flussarms: '+fmt(riverLengths[riverId[i]])+' m\nWassertiefe (geschätzt): '+metres(Math.max(.15,.28*Math.pow(width,.65)))+' m';}
+   if(best){const i=best.i,width=Math.max(.5,Math.min(80,.8*Math.sqrt(flowStrength(i)/riverThreshold)));msg='Fluss\nMittlerer Abfluss (geschätzt): '+(discharge[i]*1000).toLocaleString('de-AT',{maximumFractionDigits:2})+' l/s\nBreite (geschätzt): '+width.toLocaleString('de-AT',{maximumFractionDigits:1})+' m\nLänge des Flussarms: '+fmt(riverLengths[riverId[i]])+' m\nWassertiefe (geschätzt): '+metres(Math.max(.15,.28*Math.pow(width,.65)))+' m';}
   }
   if(!msg&&mode==='terrain'){
    const z=(erosionEnabled?erodedHeight[cell]:values[cell])-threshold;
@@ -1457,7 +1527,7 @@ function drawTerrain(){if(!regions.length)return;
   if(mode==='biome')msg=biomeNames[biome[cell]]+'\nTemperatur: '+metres(temperature[cell])+' °C\nNiederschlag: '+Math.round(rainfall[cell])+' mm/Jahr';
   if(mode==='rain')msg='Niederschlag\nJahresmittel (Modell): '+fmt(rainfall[cell])+' mm/Jahr\nLuftfeuchte (Modellindex): '+fmt(humidity[cell]*100)+' %';
   if(mode==='temperature')msg='Jahresmitteltemperatur: '+metres(temperature[cell])+' °C';
-  if(msg&&mode==='terrain')msg+='\nBiom: '+biomeNames[biome[cell]]+(biome[cell]>=2?'\nBaumdichte (Modell): '+Math.round(treeDensity[cell]*100)+' %'+(deadTree[cell]?' (abgestorben)':biome[cell]===2?' (schneebedeckt)':'')+'\nGrasdichte (Modell): '+Math.round(grassDensity[cell]*100)+' %\nBuschdichte (Modell): '+Math.round(shrubDensity[cell]*100)+' %':'');
+  if(msg&&mode==='terrain')msg+=(iceMassif[cell]>.035&&!lakeMask[cell]?'\nEismassiv – Eisaufschichtung (geschätzt): '+Math.round(iceMassif[cell]*1000)+' m':'')+'\nBiom: '+biomeNames[biome[cell]]+(biome[cell]>=2?'\nBaumdichte (Modell): '+Math.round(treeDensity[cell]*100)+' %'+(deadTree[cell]?' (abgestorben)':biome[cell]===2?' (schneebedeckt)':'')+'\nGrasdichte (Modell): '+Math.round(grassDensity[cell]*100)+' %\nBuschdichte (Modell): '+Math.round(shrubDensity[cell]*100)+' %':'');
   if(msg){const lines=msg.split('\n'),heading=document.createElement('strong');heading.textContent=lines.shift();const colors={'Gebirge':'#d5c3aa','Hügelland':'#b9d69a','Land':'#b9d69a','See':'#82d9ef','Meer':'#83c5f5','Fluss':'#82d9ef','Wasserfall':'#a8eaff','Hoher Wasserfall':'#a8eaff','Sandstrand':'#f3d79b','Flachstrand':'#f3d79b','Felsküste':'#d0c5b7','Steilküste':'#d0c5b7','Meeresfelsen':'#d0c5b7'};heading.style.color=colors[heading.textContent]||'#c9e6e7';tip.replaceChildren(heading,document.createTextNode(lines.length?'\n'+lines.join('\n'):''));tip.style.display='block';tip.style.left=Math.min(e.clientX+14,window.innerWidth-tip.offsetWidth-8)+'px';tip.style.top=Math.min(e.clientY+14,window.innerHeight-tip.offsetHeight-8)+'px';}
  };
  drawPlates(seed);const overlay=document.getElementById('heightOverlay'),oc=overlay.getContext('2d'),hi=oc.createImageData(w,h);for(let i=0;i<w*h;i++){const z=values[i]-threshold;const t=Math.max(0,Math.min(1,.5+z*2));const shade=Math.round(30+215*t),k=i*4;hi.data[k]=shade;hi.data[k+1]=shade;hi.data[k+2]=shade;hi.data[k+3]=255}oc.putImageData(hi,0,0);refreshHeightOverlay();document.getElementById('seaVal').textContent=Math.round(sea*100)+' %';document.getElementById('landstats').textContent=`Vorläufige Land-/Meer-Simulation · tatsächlicher Meeranteil ${(ocean/(w*h)*100).toFixed(1)} % · nahtloses periodisches Höhenfeld · polare Eisgebiete als erste Visualisierung (noch keine Klimasimulation); Flüsse und ${lakes.length} Seen · sichtbare Seezuflüsse ${lakeInlets} · sichtbare Seeabflüsse ${lakeOutlets} · Wasserfälle ${waterfalls.length}. Weitere Biome folgen. Die Küsten sind ein erster Entwurf, nicht das fertige Geografiemodell. Plattengrenzen wirken nun stärker auf sichtbare Gebirgszüge, Riftzonen und Verwerfungen. Landverteilung und Geländehöhe werden jetzt unabhängig berechnet; Kontinentzentren sind nicht mehr automatisch Berggipfel. Höhenmeter sind noch nicht kalibriert. Aktivitätsansicht: Rot Konvergenz, Blau Divergenz, Hellrot Transformzonen. Noch keine physikalische Langzeitsimulation. Weltform: unregelmäßige Einzelkontinente · zusätzliche Inseln folgen in einer späteren geologischen Generierungsphase · Kontinentvariante ${continentVariant}. Extremwerte 0 % und 100 % sind ausdrücklich als Tests erlaubt.`}

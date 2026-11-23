@@ -1,4 +1,4 @@
-<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unmapped – Kontinente & Regionen v140</title><style>body{background:#10212b;color:#e6f0f1;font:15px system-ui;margin:25px}main{max-width:1150px;margin:auto}button,input{font:inherit;padding:7px;background:#24424b;color:white;border:1px solid #65838a;border-radius:5px}svg{width:100%;background:#183943;border:1px solid #65838a} .mapwrap{position:relative;width:100%;} .mapwrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;} .mapwrap svg{position:relative;z-index:1;display:block;box-sizing:border-box;background:transparent;touch-action:manipulation;} .controlgroup{border:1px solid #65838a;border-radius:8px;padding:10px 12px;margin:10px 0;min-width:0}.controlgroup legend{color:#b7d3d6;font-weight:650;padding:0 7px}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center} input[type=range]{width:145px;vertical-align:middle} input[type=number]{box-sizing:border-box} .primary-action{display:block;width:100%;max-width:600px;margin:18px auto 20px;padding:17px 22px;font-size:21px;font-weight:750;background:#247b63;border:2px solid #91e3bc;border-radius:12px;box-shadow:0 5px 18px #0005;cursor:pointer} .primary-action:active{transform:translateY(1px)} .secondary-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center} .note{font-size:13px;color:#b7d3d6}#stats{margin:15px 0;white-space:pre-wrap}#detail{padding:12px;background:#25404a}@media(max-width:650px){body{margin:10px;font-size:14px}main{width:100%}label{display:inline-block;margin:5px 2px}input{max-width:100px}button{margin:4px 2px;min-height:44px}svg{max-height:65vh}#stats{font-size:12px;overflow-wrap:anywhere}}  .maplayout{position:relative;width:100%}.landscapeSide{margin:12px 0}.landscapeSide #landscapeCounts{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}@media(min-width:1800px){.landscapeSide{position:absolute;left:calc(100% + 16px);top:0;width:270px;box-sizing:border-box;margin:0}.landscapeSide #landscapeCounts{grid-template-columns:1fr}} </style><main><h2>Unmapped · Kontinente & Ozeane · v140</h2><p>Erster Geländeversuch: Kontinente verlaufen unabhängig von Regionsgrenzen. Die Welt schließt links/rechts und oben/unten nahtlos an. Vollständige Weltübersicht mit Nord-/Süd-Eisgebieten. Die Polargebiete sind wegen der vertikalen Weltumrundung am oberen und unteren Kartenrand identisch verbunden. Eisflächen sind unterbrochen und maximal etwa 70 % breit. Gleicher Seed + gleiche Kontinentvariante + gleicher Meeranteil = gleiche Küsten.</p><label>Seed <input type="number" id="seed" value="230911"></label> <label>Regionen <input type="number" id="regionCount" value="300" min="1" max="3000" step="1" title="Weltfläche passt sich automatisch an"></label> <label>Pflichtregionen (10 %) <input type="number" id="mandatoryCount" value="30" min="0" max="3000" readonly title="Automatisch 10 % der Regionsanzahl"></label><div class="controls"><label>Meeranteil <input type="range" id="sea" min="0" max="100" value="60" step="1"><input type="number" id="seaExact" min="0" max="100" value="60" step="1" inputmode="numeric" aria-label="Meeranteil in Prozent" style="width:65px"> % <span class="note">(empfohlen: 30–85 %)</span> <output id="seaVal" hidden>60 %</output></label></div><fieldset class="controlgroup"><legend>Anzeigeoptionen</legend><div class="controls"><label><input type="checkbox" id="borders"> Regionsgrenzen</label><label><input type="checkbox" id="poiView"> Pflicht-POIs</label><label><input type="checkbox" id="polarIce"> Polare Eisgebiete</label><label><input type="checkbox" id="plateView"> Tektonische Platten anzeigen</label><label><input type="checkbox" id="erosionView"> Flusserosion / Täler anzeigen</label><label><input type="checkbox" id="riverView" checked> Flüsse im Gelände anzeigen</label><label><input type="checkbox" id="waterfallView" checked> Wasserfälle anzeigen</label></div></fieldset><div class="controls"><label>Kartenansicht <select id="mapMode" style="background:#24424b;color:white;padding:8px;border-radius:6px"><option value="terrain">Gelände</option><option value="temperature">Temperatur (Jahresmittel)</option><option value="wind">Globale Winde</option><option value="rain">Niederschlag (Jahresmittel)</option><option value="biome">Biome</option><option value="height">Höhenkarte über Gelände</option><option value="tectonics">Tektonische Aktivität</option><option value="volcanism">Vulkanismus & Atolle</option><option value="geology">Geologische Kontrolle</option><option value="heightSource">Höhenursachen (Diagnose)</option><option value="drainage">Wasserabfluss (Hauptläufe)</option><option value="drainageRaw">Wasserabfluss (alle Zuflüsse)</option><option value="drainageSinks">Abflussziele & Senken</option></select></label><label id="heightOpacityLabel">Höhen-Deckkraft <input type="range" id="heightOpacity" min="0" max="80" value="30" step="5"><output id="heightOpacityValue">30 %</output></label><label>Platten <input type="range" id="plateCount" min="4" max="24" value="12" step="1"><input type="number" id="plateCountExact" min="4" max="24" value="12" step="1" inputmode="numeric" style="width:65px" aria-label="Anzahl tektonischer Platten"></label><label>Kontinentvariante <input type="number" id="continentVariant" value="0" min="0" max="2147483647" step="1" inputmode="numeric" style="width:100px" aria-label="Kontinentvariante"></label><button id="reroll">Kontinente neu mischen</button></div><fieldset class="controlgroup"><legend>Je 100 Regionen</legend><div class="controls"><label>Hauptflüsse <input id="riverRate" type="number" min="0" max="10" value="1" style="width:65px"></label><label>Hohe Bergmassive <input id="mountainRate" type="number" min="0" max="10" step="0.1" value="0.7" style="width:65px"></label><label>Seen (max.) <input id="lakeRate" type="number" min="0" max="10" value="5" style="width:65px"></label></div></fieldset><button id="fantasyRun" class="primary-action">✨ Fantasywelt generieren</button><div id="fantasyStatus" style="padding:8px"></div><button id="run">🌍 Welt generieren</button><div class="secondary-actions"><button id="next">Nächster Seed</button><button id="export">Regions-SVG</button></div><div id="stats"></div><div class="maplayout"><div class="mapwrap"><svg id="map" viewBox="0 0 1000 800"></svg><canvas id="terrain" width="480" height="384"></canvas><canvas id="heightOverlay" width="480" height="384" style="z-index:0;display:none"></canvas><canvas id="landscapeFocus" width="480" height="384" style="z-index:1;display:none"></canvas><canvas id="plates" width="480" height="384" style="z-index:0;display:none"></canvas></div><fieldset class="controlgroup landscapeSide"><legend>Landschaftsübersicht</legend><div id="landscapeCounts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px"></div></fieldset></div><p class="note" id="volcanismLegend" style="display:none">Vulkanismus: <span style="color:#f7ad37">● Hotspot-Vulkane</span> · <span style="color:#fa657a">● Vulkanische Inselbögen</span> · <span style="color:#73dfc9">● Atollriffe</span>. In „Geologische Kontrolle“ zusätzlich: helle Plattengrenzen und Pfeile für Plattenbewegung. Dunkle Flächen zeigen den übrigen Meeresboden und das Land.</p><p class="note" id="landstats"></p><div id="detail">Tippe auf eine Region, um ihre Maße und POIs zu sehen. Die Karte selbst bleibt unbeschriftet.</div><p>Weltfläche skaliert proportional zur Regionsanzahl: 100 Regionen entsprechen etwa 3,16 × 2,53 km (8 km²). Maximal 500 × 500 m, mindestens 75 × 100 oder 100 × 75 m. Teststandard 300 Regionen und 30 Pflicht-POIs (10 %). Pflichtregionen werden vor der finalen Verfeinerung fixiert. Optional-POIs folgen nach der Regionsbildung.</p></main><script>
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unmapped – Kontinente & Regionen v141</title><style>body{background:#10212b;color:#e6f0f1;font:15px system-ui;margin:25px}main{max-width:1150px;margin:auto}button,input{font:inherit;padding:7px;background:#24424b;color:white;border:1px solid #65838a;border-radius:5px}svg{width:100%;background:#183943;border:1px solid #65838a} .mapwrap{position:relative;width:100%;} .mapwrap canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;} .mapwrap svg{position:relative;z-index:1;display:block;box-sizing:border-box;background:transparent;touch-action:manipulation;} .controlgroup{border:1px solid #65838a;border-radius:8px;padding:10px 12px;margin:10px 0;min-width:0}.controlgroup legend{color:#b7d3d6;font-weight:650;padding:0 7px}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center} input[type=range]{width:145px;vertical-align:middle} input[type=number]{box-sizing:border-box} .primary-action{display:block;width:100%;max-width:600px;margin:18px auto 20px;padding:17px 22px;font-size:21px;font-weight:750;background:#247b63;border:2px solid #91e3bc;border-radius:12px;box-shadow:0 5px 18px #0005;cursor:pointer} .primary-action:active{transform:translateY(1px)} .secondary-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center} .note{font-size:13px;color:#b7d3d6}#stats{margin:15px 0;white-space:pre-wrap}#detail{padding:12px;background:#25404a}@media(max-width:650px){body{margin:10px;font-size:14px}main{width:100%}label{display:inline-block;margin:5px 2px}input{max-width:100px}button{margin:4px 2px;min-height:44px}svg{max-height:65vh}#stats{font-size:12px;overflow-wrap:anywhere}}  .maplayout{position:relative;width:100%}.landscapeSide{margin:12px 0}.landscapeSide #landscapeCounts{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}@media(min-width:1800px){.landscapeSide{position:absolute;left:calc(100% + 16px);top:0;width:270px;box-sizing:border-box;margin:0}.landscapeSide #landscapeCounts{grid-template-columns:1fr}} </style><main><h2>Unmapped · Kontinente & Ozeane · v141</h2><p>Erster Geländeversuch: Kontinente verlaufen unabhängig von Regionsgrenzen. Die Welt schließt links/rechts und oben/unten nahtlos an. Vollständige Weltübersicht mit Nord-/Süd-Eisgebieten. Die Polargebiete sind wegen der vertikalen Weltumrundung am oberen und unteren Kartenrand identisch verbunden. Eisflächen sind unterbrochen und maximal etwa 70 % breit. Gleicher Seed + gleiche Kontinentvariante + gleicher Meeranteil = gleiche Küsten.</p><label>Seed <input type="number" id="seed" value="230911"></label> <label>Regionen <input type="number" id="regionCount" value="300" min="1" max="3000" step="1" title="Weltfläche passt sich automatisch an"></label> <label>Pflichtregionen (10 %) <input type="number" id="mandatoryCount" value="30" min="0" max="3000" readonly title="Automatisch 10 % der Regionsanzahl"></label><div class="controls"><label>Meeranteil <input type="range" id="sea" min="0" max="100" value="60" step="1"><input type="number" id="seaExact" min="0" max="100" value="60" step="1" inputmode="numeric" aria-label="Meeranteil in Prozent" style="width:65px"> % <span class="note">(empfohlen: 30–85 %)</span> <output id="seaVal" hidden>60 %</output></label></div><fieldset class="controlgroup"><legend>Anzeigeoptionen</legend><div class="controls"><label><input type="checkbox" id="borders"> Regionsgrenzen</label><label><input type="checkbox" id="poiView"> Pflicht-POIs</label><label><input type="checkbox" id="polarIce"> Polare Eisgebiete</label><label><input type="checkbox" id="plateView"> Tektonische Platten anzeigen</label><label><input type="checkbox" id="erosionView"> Flusserosion / Täler anzeigen</label><label><input type="checkbox" id="riverView" checked> Flüsse im Gelände anzeigen</label><label><input type="checkbox" id="waterfallView" checked> Wasserfälle anzeigen</label></div></fieldset><div class="controls"><label>Kartenansicht <select id="mapMode" style="background:#24424b;color:white;padding:8px;border-radius:6px"><option value="terrain">Gelände</option><option value="temperature">Temperatur (Jahresmittel)</option><option value="wind">Globale Winde</option><option value="rain">Niederschlag (Jahresmittel)</option><option value="biome">Biome</option><option value="height">Höhenkarte über Gelände</option><option value="tectonics">Tektonische Aktivität</option><option value="volcanism">Vulkanismus & Atolle</option><option value="geology">Geologische Kontrolle</option><option value="heightSource">Höhenursachen (Diagnose)</option><option value="drainage">Wasserabfluss (Hauptläufe)</option><option value="drainageRaw">Wasserabfluss (alle Zuflüsse)</option><option value="drainageSinks">Abflussziele & Senken</option></select></label><label id="heightOpacityLabel">Höhen-Deckkraft <input type="range" id="heightOpacity" min="0" max="80" value="30" step="5"><output id="heightOpacityValue">30 %</output></label><label>Platten <input type="range" id="plateCount" min="4" max="24" value="12" step="1"><input type="number" id="plateCountExact" min="4" max="24" value="12" step="1" inputmode="numeric" style="width:65px" aria-label="Anzahl tektonischer Platten"></label><label>Kontinentvariante <input type="number" id="continentVariant" value="0" min="0" max="2147483647" step="1" inputmode="numeric" style="width:100px" aria-label="Kontinentvariante"></label><button id="reroll">Kontinente neu mischen</button></div><fieldset class="controlgroup"><legend>Je 100 Regionen</legend><div class="controls"><label>Hauptflüsse <input id="riverRate" type="number" min="0" max="10" value="1" style="width:65px"></label><label>Hohe Bergmassive <input id="mountainRate" type="number" min="0" max="10" step="0.1" value="0.7" style="width:65px"></label><label>Seen (max.) <input id="lakeRate" type="number" min="0" max="10" value="5" style="width:65px"></label></div></fieldset><button id="fantasyRun" class="primary-action">✨ Fantasywelt generieren</button><div id="fantasyStatus" style="padding:8px"></div><button id="run">🌍 Welt generieren</button><div class="secondary-actions"><button id="next">Nächster Seed</button><button id="export">Regions-SVG</button></div><div id="stats"></div><div class="maplayout"><div class="mapwrap"><svg id="map" viewBox="0 0 1000 800"></svg><canvas id="terrain" width="480" height="384"></canvas><canvas id="heightOverlay" width="480" height="384" style="z-index:0;display:none"></canvas><canvas id="landscapeFocus" width="480" height="384" style="z-index:1;display:none"></canvas><canvas id="plates" width="480" height="384" style="z-index:0;display:none"></canvas></div><fieldset class="controlgroup landscapeSide"><legend>Landschaftsübersicht</legend><div id="landscapeCounts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px"></div></fieldset></div><p class="note" id="volcanismLegend" style="display:none">Vulkanismus: <span style="color:#f7ad37">● Hotspot-Vulkane</span> · <span style="color:#fa657a">● Vulkanische Inselbögen</span> · <span style="color:#73dfc9">● Atollriffe</span>. In „Geologische Kontrolle“ zusätzlich: helle Plattengrenzen und Pfeile für Plattenbewegung. Dunkle Flächen zeigen den übrigen Meeresboden und das Land.</p><p class="note" id="landstats"></p><div id="detail">Tippe auf eine Region, um ihre Maße und POIs zu sehen. Die Karte selbst bleibt unbeschriftet.</div><p>Weltfläche skaliert proportional zur Regionsanzahl: 100 Regionen entsprechen etwa 3,16 × 2,53 km (8 km²). Maximal 500 × 500 m, mindestens 75 × 100 oder 100 × 75 m. Teststandard 300 Regionen und 30 Pflicht-POIs (10 %). Pflichtregionen werden vor der finalen Verfeinerung fixiert. Optional-POIs folgen nach der Regionsbildung.</p></main><script>
 let W=4472,H=3578;let continentVariant=0;const svg=document.getElementById('map');let regions=[],pois=[];
 function featureCount(id){return Math.floor(Math.max(0,Math.min(10,Number(document.getElementById(id).value)||0))*Math.max(0,Number(document.getElementById('regionCount').value))/100)}
 function rng(seed){let s=(seed>>>0)||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return (s>>>0)/4294967296}}
@@ -829,7 +829,7 @@ function drawTerrain(){
   }
   routingHeight[i]=sum/weight;
  }
- // v140: kontinuierlicher Hanggradient bestimmt die bevorzugte
+ // v141: kontinuierlicher Hanggradient bestimmt die bevorzugte
  // Fließrichtung. D8 dient nur noch als diskrete Speicherung der
  // hydrologischen Verbindung, nicht als Richtungsgeber.
  const sampleRoute=(x,y)=>routingHeight[((y%h+h)%h)*w+((x%w+w)%w)];
@@ -1254,7 +1254,7 @@ function drawTerrain(){
   const falls=focusKey===3?new Set(waterfalls.flatMap(f=>[f.i,f.d])):null;
   const color=isBiome?biomeColors[t]:focusColors[focusKey];
   const hits=new Uint8Array(w*h);
-  for(let i=0;i<w*h;i++)hits[i]=isBiome?biome[i]===t:focusKey===0?mountainSeen[i]:focusKey===1?visibleRiver[i]:focusKey===2?lakeMask[i]:focusKey===3?falls.has(i):coastalMaterial[i]===focusKey-3&&!lakeMask[i];
+  for(let i=0;i<w*h;i++)hits[i]=isBiome?(biome[i]===t||t===8&&biome[i]===15):focusKey===0?mountainSeen[i]:focusKey===1?visibleRiver[i]:focusKey===2?lakeMask[i]:focusKey===3?falls.has(i):coastalMaterial[i]===focusKey-3&&!lakeMask[i];
   for(let i=0;i<w*h;i++){
    const hit=hits[i],x=i%w,y=(i/w)|0;
    const edge=hit&&(!hits[y*w+(x+1)%w]||!hits[y*w+(x+w-1)%w]||!hits[((y+1)%h)*w+x]||!hits[((y+h-1)%h)*w+x]);
@@ -1273,8 +1273,8 @@ function drawTerrain(){
  }));
  phase('Niederschlag');
  const biome=new Uint8Array(w*h);
- const biomeNames=['Meer','See','Schnee/Eis','Tundra','Taiga','Wald','Wiese','Steppe','Wüste','Tropenwald','Sumpf','Gebirge','Vulkan','Kahlland','Arktis'];
- const biomeColors=[[45,100,145],[65,145,180],[230,240,245],[157,167,145],[57,103,89],[62,130,66],[143,184,91],[187,177,100],[224,190,119],[20,76,46],[83,125,105],[145,135,125],[105,72,65],[157,147,127],[239,247,250]];
+ const biomeNames=['Meer','See','Schnee/Eis','Tundra','Taiga','Wald','Wiese','Steppe','Wüste','Tropenwald','Sumpf','Gebirge','Vulkan','Kahlland','Arktis','Oase'];
+ const biomeColors=[[45,100,145],[65,145,180],[230,240,245],[157,167,145],[57,103,89],[62,130,66],[143,184,91],[187,177,100],[224,190,119],[20,76,46],[83,125,105],[145,135,125],[105,72,65],[157,147,127],[239,247,250],[69,155,111]];
  for(let i=0;i<w*h;i++){
   const z=values[i],x=i%w,y=Math.floor(i/w);
   const u=x/w,v=y/h;
@@ -1380,14 +1380,14 @@ function drawTerrain(){
  for(const f of waterfalls)if(f!==specialFall)f.drop=Math.max(0,(erosionEnabled?erodedHeight[f.i]-erodedHeight[f.d]:values[f.i]-values[f.d]));
 
 
- // v140: exact raster quotas, toroidal four-neighbour connected deserts.
+ // v141: exact raster quotas, toroidal four-neighbour connected deserts.
  function planDeserts(){
   const n=w*h, wantTwo=rng((seed^0x7c915ab3)>>>0)()<.15;
   const quotas=[Math.round(n*.05),...(wantTwo?[Math.round(n*.02)]:[])];
   const base=biome.slice(), eligible=new Uint8Array(n), score=new Float32Array(n);
   const neighbors=i=>{const x=i%w,y=(i/w)|0;return [y*w+(x+1)%w,y*w+(x+w-1)%w,((y+1)%h)*w+x,((y+h-1)%h)*w+x]};
   for(let i=0;i<n;i++){
-   eligible[i]=[5,6,7,8,9,13].includes(base[i])&&!lakeMask[i]&&!visibleRiver[i]&&!coastalMaterial[i]&&iceMassif[i]<=.035;
+   eligible[i]=[5,6,7,8,9,13].includes(base[i])&&!lakeMask[i]&&!coastalMaterial[i]&&iceMassif[i]<=.035;
    score[i]=temperature[i]*.12-rainfall[i]*.003+(base[i]===8?2:0);
   }
   const candidates=Array.from({length:n},(_,i)=>i).filter(i=>eligible[i]).sort((a,b)=>score[b]-score[a]||a-b);
@@ -1440,6 +1440,35 @@ function drawTerrain(){
   }
   return null;
  }
+ function planBarren(base){
+  const n=w*h, quotas=[Math.round(base.reduce((sum,t)=>sum+(t>=2?1:0),0)*.02)];
+  const eligible=new Uint8Array(n), score=new Float32Array(n);
+  const neighbors=i=>{const x=i%w,y=(i/w)|0;return [y*w+(x+1)%w,y*w+(x+w-1)%w,((y+1)%h)*w+x,((y+h-1)%h)*w+x]};
+  for(let i=0;i<n;i++){
+   eligible[i]=[4,5,6,7,9,13].includes(base[i])&&!lakeMask[i]&&!coastalMaterial[i]&&iceMassif[i]<=.035;
+   score[i]=field((i%w)/w*9%1,((i/w)|0)/h*9%1,seed^0x73ac8123)*5+hoverHeight[i]*4-rainfall[i]/700;
+  }
+  const candidates=Array.from({length:n},(_,i)=>i).filter(i=>eligible[i]).sort((a,b)=>score[b]-score[a]||a-b);
+  for(let attempt=0;attempt<12;attempt++){
+   const blocked=new Uint8Array(n), selected=new Uint8Array(n), groups=[];
+   for(const quota of quotas){
+    const center=candidates.find((i,k)=>!blocked[i]&&k>=attempt*37);
+    if(center===undefined)break;
+    const seen=new Uint8Array(n), heap=[], group=[];
+    const cx=center%w,cy=(center/w)|0;
+    function push(i){if(seen[i]||blocked[i]||!eligible[i])return;seen[i]=1;let dx=Math.abs(i%w-cx),dy=Math.abs(((i/w)|0)-cy);dx=Math.min(dx,w-dx);dy=Math.min(dy,h-dy);const p=score[i]*.5-Math.hypot(dx,dy)*.035;let k=heap.length;heap.push([p,i]);while(k){let j=(k-1)>>1;if(heap[j][0]>=p)break;heap[k]=heap[j];k=j;}heap[k]=[p,i];}
+    function pop(){const top=heap[0],last=heap.pop();if(heap.length){let k=0;while(k*2+1<heap.length){let j=k*2+1;if(j+1<heap.length&&heap[j+1][0]>heap[j][0])j++;if(heap[j][0]<=last[0])break;heap[k]=heap[j];k=j;}heap[k]=last;}return top[1];}
+    push(center);while(heap.length&&group.length<quota){const i=pop();group.push(i);for(const j of neighbors(i))push(j);}
+    if(group.length!==quota)break;
+    groups.push(group);for(const i of group){selected[i]=1;blocked[i]=1;for(const j of neighbors(i))blocked[j]=1;}
+   }
+   if(groups.length!==quotas.length)continue;
+   const result=base.slice();for(let i=0;i<n;i++){if(selected[i])result[i]=13;else if(base[i]===13)result[i]=6;}
+   const present=new Set(result);if([...new Set(base)].some(t=>[2,3,8,11,12,14].includes(t)&&!present.has(t)))continue;
+   return {result,groups};
+  }
+  return null;
+ }
  function updateBiomeOverview(){
   const seen=new Uint8Array(w*h),queue=new Int32Array(w*h),counts=new Int32Array(biomeNames.length);
   for(let i=0;i<biome.length;i++){
@@ -1451,7 +1480,7 @@ function drawTerrain(){
     }
    }
   }
-  const labels=['Meeresgebiete','Seegebiete (Biom)','Schnee-/Eisgebiete','Tundren','Taigagebiete','Wälder','Wiesen','Steppen','Wüsten','Tropenwälder','Sümpfe','Gebirgsbiome','Vulkangebiete','Kahllandgebiete','Arktisgebiete'];
+  const labels=['Meeresgebiete','Seegebiete (Biom)','Schnee-/Eisgebiete','Tundren','Taigagebiete','Wälder','Wiesen','Steppen','Wüsten','Tropenwälder','Sümpfe','Gebirgsbiome','Vulkangebiete','Kahllandgebiete','Arktisgebiete','Oasen'];
   for(let t=0;t<labels.length;t++){
    let el=document.getElementById('biomeOverview'+t);
    if(!el){el=document.createElement('div');el.id='biomeOverview'+t;el.style.cssText='padding:6px 8px;background:#18333e;border-radius:5px';overview.append(el);}
@@ -1466,10 +1495,36 @@ function drawTerrain(){
  if(!desertPlan){document.getElementById("fantasyStatus").textContent="Fantasywelt nicht erzeugt: Wüstenflächen passen nicht in geeignete Landflächen. Basiswelt unverändert.";return;}
  const swampPlan=planSwamp(desertPlan.result);
  if(!swampPlan){document.getElementById("fantasyStatus").textContent="Fantasywelt nicht erzeugt: Kein ausreichend zusammenhängendes Sumpfgebiet. Basiswelt unverändert.";return;}
- const finalBiomes=swampPlan.result;
+ const barrenPlan=planBarren(swampPlan.result);
+ if(!barrenPlan){document.getElementById("fantasyStatus").textContent="Fantasywelt nicht erzeugt: Kahlland passt nicht. Basiswelt unverändert.";return;}
+ const finalBiomes=barrenPlan.result;
+ const landCount=finalBiomes.reduce((n,t)=>n+(t>=2?1:0),0);
+ const steppe=Array.from(finalBiomes.keys()).filter(i=>finalBiomes[i]===7);
+ steppe.sort((a,b)=>rainfall[a]-rainfall[b]||a-b);
+ for(const i of steppe.slice(Math.floor(landCount*.10)))finalBiomes[i]=6;
+ const oasisRng=rng(seed^0x6ac98231),oasisWater=new Set();
+ const adjacent=i=>{const x=i%w,y=(i/w)|0;return [y*w+(x+1)%w,y*w+(x+w-1)%w,((y+1)%h)*w+x,((y+h-1)%h)*w+x]};
+ for(const group of desertPlan.groups){
+  const count=1+Math.floor(oasisRng()*4);
+  for(let j=0;j<count;j++){
+   const radius=2+Math.floor(oasisRng()*5);
+   const candidates=group.filter(i=>finalBiomes[i]===8&&adjacent(i).every(q=>finalBiomes[q]===8));
+   if(!candidates.length)break;
+   let center=candidates[Math.floor(oasisRng()*candidates.length)];
+   const rivers=candidates.filter(i=>visibleRiver[i]);if(rivers.length&&oasisRng()<.55)center=rivers[Math.floor(oasisRng()*rivers.length)];
+   const cx=center%w,cy=(center/w)|0,patch=[];
+   for(let dy=-radius;dy<=radius;dy++)for(let dx=-radius;dx<=radius;dx++){
+    if(dx*dx+dy*dy>radius*radius)continue;
+    patch.push(((cy+dy+h)%h)*w+(cx+dx+w)%w);
+   }
+   if(!patch.every(i=>finalBiomes[i]===8&&adjacent(i).every(q=>finalBiomes[q]===8)))continue;
+   for(const i of patch){finalBiomes[i]=15;if(i===center||adjacent(center).includes(i)&&radius>=4)oasisWater.add(i);}
+  }
+ }
+
  // Retain natural steppe and barren terrain; supplement if absent.
- const specialEligible=i=>[4,5,6,7,9,13].includes(finalBiomes[i])&&!lakeMask[i]&&!coastalMaterial[i]&&!visibleRiver[i]&&iceMassif[i]<=.035;
- for(const type of [7,13,12]){
+ const specialEligible=i=>[4,5,6,9].includes(finalBiomes[i])&&!lakeMask[i]&&!coastalMaterial[i]&&!visibleRiver[i]&&iceMassif[i]<=.035;
+ for(const type of [12]){
   const land=finalBiomes.reduce((n,t)=>n+(t>=2?1:0),0),quota=Math.round(land*(type===12?.012:type===7?.025:.012));
   let existing=finalBiomes.reduce((n,t)=>n+(t===type?1:0),0);
   if(existing>=quota)continue;
@@ -1499,18 +1554,18 @@ function drawTerrain(){
  const forestSet=new Set([...tropicalCells.slice(0,tropicalQuota),...temperateCells.slice(0,forestCount-tropicalQuota)]);
  for(const i of rest)finalBiomes[i]=forestSet.has(i)?(tropical(i)?9:5):6;
  for(let i=0;i<biome.length;i++)if(biome[i]!==finalBiomes[i]){
-  const t=finalBiomes[i];biome[i]=t;treeDensity[i]=[8,12,13].includes(t)?0:t===9?.8:t===5?.65:t===10?.25:.08;grassDensity[i]=t===12?0:t===13?.05:t===7?.4:t===8?.02:t===6?.8:t===10?.5:.45;shrubDensity[i]=t===8?.05:t===6?.25:.3;deadTree[i]=t===13?1:0;wetlandPool[i]=t===10&&wetland[i]>.53?1:0;
+  const t=finalBiomes[i];biome[i]=t;treeDensity[i]=[8,12,13].includes(t)?0:t===15?.55:t===9?.8:t===5?.65:t===10?.25:.08;grassDensity[i]=t===12?0:t===13?.05:t===7?.4:t===8?.02:t===6?.8:t===10?.5:.45;shrubDensity[i]=t===8?.05:t===6?.25:.3;deadTree[i]=t===13?1:0;wetlandPool[i]=oasisWater.has(i)||t===10&&wetland[i]>.53?1:0;
  }
  fantasyDone=true;
 
- const counts=new Int32Array(15);for(const t of biome)counts[t]++;
+ const counts=new Int32Array(16);for(const t of biome)counts[t]++;
  const targets=[0,0,-10,-2,4,12,15,18,25,25,18,5,15,12,-20];
  const added=[],missing=[];
  for(let t=2;t<15;t++){
-  if([4,5,6,7,8,9,10,13].includes(t)||counts[t])continue;
+  if([4,5,6,7,8,9,10,13,15].includes(t)||counts[t])continue;
   let center=-1,best=-Infinity;
   for(let i=0;i<w*h;i++){
-   if([5,6,8,9,10].includes(biome[i])||biome[i]<2||counts[biome[i]]<80||iceMassif[i]>.035||coastalMaterial[i]||visibleRiver[i]||lakeMask[i])continue;
+   if([5,6,7,8,9,10,13,15].includes(biome[i])||biome[i]<2||counts[biome[i]]<80||iceMassif[i]>.035||coastalMaterial[i]||visibleRiver[i]||lakeMask[i])continue;
    const score=-Math.abs(temperature[i]-targets[t])+(t===11||t===12?hoverHeight[i]*20:0)+(t===10?wetland[i]*15:0)+(t===8?-rainfall[i]/100:0);
    if(score>best){best=score;center=i;}
   }
@@ -1519,7 +1574,7 @@ function drawTerrain(){
   for(let dy=-5;dy<=5;dy++)for(let dx=-5;dx<=5;dx++){
    if(dx*dx+dy*dy>25)continue;
    const i=((cy+dy+h)%h)*w+(cx+dx+w)%w,old=biome[i];
-   if([5,6,8,9,10].includes(old)||old<2||counts[old]<=1||iceMassif[i]>.035||coastalMaterial[i]||visibleRiver[i]||lakeMask[i])continue;
+   if([5,6,7,8,9,10,13,15].includes(old)||old<2||counts[old]<=1||iceMassif[i]>.035||coastalMaterial[i]||visibleRiver[i]||lakeMask[i])continue;
    counts[old]--;counts[t]++;biome[i]=t;
    treeDensity[i]=[0,0,.15,0,.45,.65,.08,.02,0,.8,.25,.05,0,.07,0][t];
    grassDensity[i]=[0,0,0,.2,.3,.45,.8,.4,.02,.4,.5,.1,0,.05,0][t];
@@ -1566,7 +1621,7 @@ function drawTerrain(){
   const i=y*w+x,style=coastalStyle[i],shore=mask[i]-coast;
   const grain=field((x/w*17)%1,(y/h*17)%1,seed^0x198abcde);
   if(shore>=0&&!lakeMask[i]){
-   const type=biome[i],palette=[[45,100,145],[65,145,180],[225,237,242],[151,160,135],[48,91,68],[43,101,48],[139,177,83],[178,166,99],[221,191,133],[30,99,53],[65,105,87],[145,135,125],[76,58,54],[157,147,127],[239,247,250]];
+   const type=biome[i],palette=[[45,100,145],[65,145,180],[225,237,242],[151,160,135],[48,91,68],[43,101,48],[139,177,83],[178,166,99],[221,191,133],[17,64,36],[65,105,87],[145,135,125],[76,58,54],[157,147,127],[239,247,250],[69,155,111]];
    const c=palette[type],fine=field((x/w*43)%1,(y/h*43)%1,seed^0x17ac923b);
    const forest=type===4||type===5||type===9;
    const texture=forest?grain*18+fine*13:type===8?Math.sin(x*.35+y*.17+grain*3)*5+fine*3:type===10?grain*15+fine*8:type===2?fine*5:type===12||type===13?grain*18+fine*12:grain*7+fine*4;
